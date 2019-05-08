@@ -13484,12 +13484,19 @@ div#notebook {
     <span class="n">bg_path_image</span> <span class="o">=</span> <span class="n">add_gabors</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">gabors</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">generate_contrast_image</span><span class="p">:</span>
-<span class="c1">#         contr_size = (contrast_grid_size[0]*3, contrast_grid_size[1]*3)</span>
         <span class="n">contr_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">contr_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">contr_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">path_contrast</span> <span class="o">=</span> <span class="n">path_contrast_func</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">contr_size</span><span class="p">)</span>
-        <span class="n">bg_contrast</span> <span class="o">=</span> <span class="n">bg_contrast_func</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">contr_size</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">contrast_landscape</span> <span class="o">&amp;</span> <span class="n">ContrastLandscape</span><span class="o">.</span><span class="n">RANDOM_PATH</span><span class="p">):</span>
+            <span class="n">path_contrast</span> <span class="o">=</span> <span class="n">path_contrast_func</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">contr_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path_contrast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">path_contrast</span><span class="p">,</span> <span class="n">contr_size</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">contrast_landscape</span> <span class="o">&amp;</span> <span class="n">ContrastLandscape</span><span class="o">.</span><span class="n">RANDOM_BACKGROUND</span><span class="p">):</span>
+            <span class="n">bg_contrast</span> <span class="o">=</span> <span class="n">bg_contrast_func</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">contr_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bg_contrast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">bg_contrast</span><span class="p">,</span> <span class="n">contr_size</span><span class="p">)</span>
         
     <span class="k">return</span> <span class="n">path_image</span><span class="p">,</span> <span class="n">bg_path_image</span><span class="p">,</span> <span class="n">path_contrast</span><span class="p">,</span> <span class="n">bg_contrast</span>
     
@@ -13751,23 +13758,6 @@ div#notebook {
 
 </div>
 
-</div>
-</div>
-
-  </div>
-
-  
-
-  <div class="
-      cell border-box-sizing code_cell rendered">
-    <div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
 
