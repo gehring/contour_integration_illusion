@@ -13395,7 +13395,7 @@ div#notebook {
                     <span class="n">start_distance</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">path_angle</span><span class="p">,</span> <span class="n">angle_noise</span><span class="p">,</span>
                     <span class="n">random_phase</span><span class="p">,</span> <span class="n">align_phase</span><span class="p">,</span> <span class="n">contrast_landscape</span><span class="p">,</span> <span class="n">contrast_grid_size</span><span class="p">,</span>
                     <span class="n">min_contrast</span><span class="p">,</span> <span class="n">max_contrast</span><span class="p">,</span> <span class="n">generate_contrast_image</span><span class="p">,</span>
-                    <span class="n">contrast_epsilon</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">contrast_smooth</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+                    <span class="n">contrast_epsilon</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">contrast_smooth</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     
     <span class="n">grid_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">))</span>
@@ -13635,6 +13635,13 @@ div#notebook {
     <span class="n">step</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
     <span class="n">continuous_update</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">contrast_resolution</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="nb">min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">continuous_update</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">update_max_range</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="n">max_contrast</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">min_contrast</span><span class="o">.</span><span class="n">value</span>
@@ -13643,9 +13650,10 @@ div#notebook {
 <span class="n">grid_size</span> <span class="o">=</span> <span class="mi">16</span>
 <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">65</span>
 <span class="n">start_distance</span> <span class="o">=</span> <span class="mi">128</span>
-<span class="n">contrast_grid_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">plotting_function</span><span class="p">(</span><span class="n">path_contrast</span><span class="p">,</span> <span class="n">bg_contrast</span><span class="p">,</span> <span class="n">shared_random</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">plotting_function</span><span class="p">(</span><span class="n">path_contrast</span><span class="p">,</span> <span class="n">bg_contrast</span><span class="p">,</span> <span class="n">shared_random</span><span class="p">,</span>
+                      <span class="n">contrast_resolution</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">contrast_grid_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">contrast_resolution</span><span class="p">,</span> <span class="n">contrast_resolution</span><span class="p">)</span>
     <span class="n">contrast_landscape</span> <span class="o">=</span> <span class="n">ContrastLandscape</span><span class="o">.</span><span class="n">FIXED</span>
     <span class="k">if</span> <span class="n">path_contrast</span><span class="p">:</span>
         <span class="n">contrast_landscape</span> <span class="o">=</span> <span class="n">contrast_landscape</span> <span class="o">|</span> <span class="n">ContrastLandscape</span><span class="o">.</span><span class="n">RANDOM_PATH</span>
@@ -13693,7 +13701,7 @@ div#notebook {
         <span class="s2">&quot;shared_random&quot;</span><span class="p">:</span> <span class="n">shared_random</span><span class="p">,</span>
         <span class="s2">&quot;min_contrast&quot;</span><span class="p">:</span> <span class="n">min_contrast</span><span class="p">,</span>
         <span class="s2">&quot;max_contrast&quot;</span><span class="p">:</span> <span class="n">max_contrast</span><span class="p">,</span>
-        
+        <span class="s2">&quot;contrast_resolution&quot;</span><span class="p">:</span> <span class="n">contrast_resolution</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">)</span>
 <span class="n">col1</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">VBox</span><span class="p">([</span>
@@ -13716,6 +13724,7 @@ div#notebook {
                   <span class="n">path_contrast</span><span class="p">,</span>
                   <span class="n">bg_contrast</span><span class="p">,</span>
                   <span class="n">shared_random</span><span class="p">]),</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">([</span><span class="n">widgets</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Contrast grid&#39;</span><span class="p">),</span> <span class="n">contrast_resolution</span><span class="p">]),</span>
 <span class="p">]</span>
 
 <span class="n">box</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
@@ -13758,6 +13767,23 @@ div#notebook {
 
 </div>
 
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
 </div>
 </div>
 
