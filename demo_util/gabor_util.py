@@ -146,7 +146,7 @@ def create_path_gabor(path, cell_size, size, scale, wavelength,
         
         # sample a random phase even if not needed to keep the pseudo random
         # generator state consistent.
-        rnd_phase = np.random.uniform(-np.pi, np.pi*3)
+        rnd_phase = np.random.uniform(0, np.pi*2)
         
         if phase is None:
             gabor_phase = rnd_phase
